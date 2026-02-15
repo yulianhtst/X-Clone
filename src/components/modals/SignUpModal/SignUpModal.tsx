@@ -9,6 +9,7 @@ import ThirdModalStep from "./Steps/Third";
 import FourthModalStep from "./Steps/Fourth";
 import FifthModalStep from "./Steps/Fifth";
 import CloseButton from "../../buttons/CloseButton/CloseButton";
+import { useModal } from "@/src/context/ModalContextProvider";
 
 interface SignUp {
     name: string;
@@ -17,11 +18,8 @@ interface SignUp {
     isValid: boolean;
 }
 
-export default function SignUpModal({
-    handleClose,
-}: {
-    handleClose: () => void;
-}) {
+export default function SignUpModal() {
+    const { closeModal } = useModal();
     const [step, setStep] = useState<number>(1);
     const [form, setForm] = useState<SignUp>({
         name: "",
@@ -48,7 +46,7 @@ export default function SignUpModal({
         <>
             <Box display="flex">
                 {step == 1 ? (
-                    <CloseButton handleClose={handleClose} />
+                    <CloseButton handleClose={closeModal} />
                 ) : (
                     <IconButton onClick={onBackBtnClickHandler}>
                         <ArrowBackIosIcon />

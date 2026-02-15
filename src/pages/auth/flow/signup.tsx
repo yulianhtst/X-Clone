@@ -1,18 +1,12 @@
-import SignUpPage from "@/src/components/auth/SignUpPage";
-import ModalLayout from "@/src/components/layouts/ModalLayout";
-import { ModalContext } from "@/src/context/ModalContext";
-import { useContext, useEffect } from "react";
+import { useModal } from "@/src/context/ModalContextProvider";
+import { useEffect } from "react";
 
 export default function SignUp() {
-    const { setModalState } = useContext(ModalContext);
+    const { openModal } = useModal();
 
     useEffect(() => {
-        setModalState(true);
+        openModal("signup");
     }, []);
 
-    return (
-        <ModalLayout>
-            <SignUpPage />
-        </ModalLayout>
-    );
+    return null;
 }

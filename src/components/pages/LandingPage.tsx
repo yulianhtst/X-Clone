@@ -1,39 +1,18 @@
 import { Box, Button, Typography, styled } from "@mui/material";
-import { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { ModalContext } from "@/src/context/ModalContext";
-import ModalLayout from "../layouts/ModalLayout";
-import SignInModal from "../modals/SignInModal/SignInModal";
-import SignUpModal from "../modals/SignUpModal/SignUpModal";
+import { useModal } from "@/src/context/ModalContextProvider";
+import { useRouter } from "next/router";
+
+type ModalType = "signup" | "signin" | null;
 
 export default function LandingPage() {
-    const { state, setModalState } = useContext(ModalContext);
+    const { openModal } = useModal();
 
-    const modalLayouts = {
-        signup: (
-            <SignUpModal
-                handleClose={function (): void {
-                    throw new Error("Function not implemented.");
-                }}
-            />
-        ),
-        signin: (
-            <SignInModal
-                handleClose={function (): void {
-                    throw new Error("Function not implemented.");
-                }}
-            />
-        ),
-    };
-
-    const onSignUpClick = () => {
-        setModalState(true, "signup");
-    };
-
-    const onSignInClick = () => {
-        setModalState(true, "signin");
+    const handleModalOpen = (type: ModalType) => {
+        openModal(type);
+        window.history.pushState(null, "", `/auth/flow/${type}`);
     };
 
     return (
@@ -47,9 +26,6 @@ export default function LandingPage() {
                     alt={"logo"}
                 />
             </ContentWrapper>
-
-            <ModalLayout>{modalLayouts[state.modalContent]}</ModalLayout>
-
             <ContentWrapper flex={1}>
                 <Box>
                     <Box>
@@ -61,13 +37,9 @@ export default function LandingPage() {
                         <Typography>Join today</Typography>
                     </Box>
                     <AuthBox>
-                        <Link
-                            href="/"
-                            as="/auth/flow/signup">
-                            <AuthButton onClick={onSignUpClick}>
-                                Create account
-                            </AuthButton>
-                        </Link>
+                        <AuthButton onClick={() => handleModalOpen("signup")}>
+                            Create account
+                        </AuthButton>
 
                         <Box display="flex">
                             <Line />
@@ -75,13 +47,9 @@ export default function LandingPage() {
                             <Line />
                         </Box>
 
-                        <Link
-                            href="/"
-                            as="/auth/flow/signin">
-                            <AuthButton onClick={onSignInClick}>
-                                Login to account
-                            </AuthButton>
-                        </Link>
+                        <AuthButton onClick={() => handleModalOpen("signin")}>
+                            Login to account
+                        </AuthButton>
                         <TermsAndConditions />
                     </AuthBox>
                 </Box>

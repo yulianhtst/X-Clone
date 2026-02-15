@@ -9,17 +9,16 @@ import { login } from "@/src/services";
 
 import ModalButton from "../../buttons/ModalButton/ModalButton";
 import CloseButton from "../../buttons/CloseButton/CloseButton";
+import { useModal } from "@/src/context/ModalContextProvider";
 
 interface LoginForm {
     email: string;
     password: string;
 }
-export default function SignInModal({
-    handleClose,
-}: {
-    handleClose: () => void;
-}) {
+
+export default function SignInModal() {
     const { userAuth } = useContext(AuthContext);
+    const { closeModal } = useModal();
     const router = useRouter();
 
     const [form, setForm] = useState<LoginForm>({
@@ -65,7 +64,7 @@ export default function SignInModal({
     return (
         <>
             <Box display="flex">
-                <CloseButton handleClose={handleClose} />
+                <CloseButton handleClose={() => closeModal()} />
             </Box>
             <Box marginBottom={"20px"}>
                 <Typography

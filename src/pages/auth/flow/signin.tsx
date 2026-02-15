@@ -1,18 +1,12 @@
-import SignInPage from "@/src/components/auth/SignInPage";
-import ModalLayout from "@/src/components/layouts/ModalLayout";
-import { ModalContext } from "@/src/context/ModalContext";
-import { useContext, useEffect } from "react";
+import { useModal } from "@/src/context/ModalContextProvider";
+import { useEffect } from "react";
 
 export default function SignIn() {
-    const { setModalState } = useContext(ModalContext);
+    const { openModal } = useModal();
 
     useEffect(() => {
-        setModalState(true);
+        openModal("signin");
     }, []);
 
-    return (
-        <ModalLayout>
-            <SignInPage />
-        </ModalLayout>
-    );
+    return null;
 }

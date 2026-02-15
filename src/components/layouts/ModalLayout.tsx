@@ -1,20 +1,28 @@
-import { ModalContext } from "@/src/context/ModalContext";
 import { Box, Modal, styled } from "@mui/material";
 import { useRouter } from "next/router";
-import { ReactNode, useContext } from "react";
+import { modalRegistry } from "../modals/modalRegistry";
+import { useModal } from "@/src/context/ModalContextProvider";
 
-export default function ModalLayout({ children }: { children: ReactNode }) {
-    const { state, setModalState } = useContext(ModalContext);
+export default function ModalLayout() {
+    const { isOpen, modalType, closeModal } = useModal();
+
     const router = useRouter();
+    
+    if (!isOpen || !modalType) return null;
+
+    const ModalContent = modalRegistry[modalType];
 
     return (
         <Modal
-            open={state.modalState}
+            open={isOpen}
             onClose={() => {
-                router.back();
-                setModalState(false, null);
+                closeModal();
+                //TODO: Maybe Redundant 
+                router.push("/");
             }}>
-            <ModalBody>{children}</ModalBody>
+            <ModalBody>
+                <ModalContent />
+            </ModalBody>
         </Modal>
     );
 }
